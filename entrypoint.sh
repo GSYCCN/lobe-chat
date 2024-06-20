@@ -1,29 +1,11 @@
 #!/usr/bin/env bash
 
-# 函数：检查并清理URL
-cleanUrl() {
-  local url=\$1
-  # 去除 https:// 前缀
-  url=${url#https://}
-  url=${url#http://}
-  # 去除 .com 后缀
-  url=${url%.com}
-  echo $url
-}
-
+# The first part wrapped in a function
 makeSedCommands() {
   printenv | \
-      grep '^NEXT_PUBLIC' | \
+      grep  '^NEXT_PUBLIC' | \
       sed -r "s/=/ /g" | \
-      while read key value; do
-        if [[ "$key" == "NEXT_PUBLIC_S3_DOMAIN" ]]; then
-          # 清理特定的 NEXT_PUBLIC_AHC 环境变量
-          value=$(cleanUrl $value)
-        fi
-
-        # 生成 sed 替换命令
-        echo "sed -i \"s#APP_$key#$value#g\""
-      done
+      xargs -n 2 bash -c 'echo "sed -i \"s#APP_$0#$1#g\""'
 }
 
 # Set the delimiter to newlines (needed for looping over the function output)
