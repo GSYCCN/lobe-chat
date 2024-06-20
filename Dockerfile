@@ -28,9 +28,11 @@ RUN pnpm i
 COPY . .
 
 ENV NEXT_PUBLIC_BASE_PATH ""
-#ENV NEXT_PUBLIC_S3_DOMAIN=${NEXT_PUBLIC_S3_DOMAIN}
-#ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-#ENV NEXT_PUBLIC_SERVICE_MODE=${NEXT_PUBLIC_SERVICE_MODE}
+
+ARG NEXT_PUBLIC_SERVICE_MODE=APP_NEXT_PUBLIC_SERVICE_MODE
+ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=APP_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+ARG NEXT_PUBLIC_S3_DOMAIN=https://APP_NEXT_PUBLIC_S3_DOMAIN.com
+
 # Sentry
 ENV NEXT_PUBLIC_SENTRY_DSN ""
 ENV SENTRY_ORG ""
@@ -72,6 +74,9 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=sharp --chown=nextjs:nodejs /app/node_modules/.pnpm ./node_modules/.pnpm
+
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 USER nextjs
 
@@ -137,4 +142,5 @@ ENV DEEPSEEK_API_KEY ""
 # Qwen
 ENV QWEN_API_KEY ""
 
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["node", "server.js"]
