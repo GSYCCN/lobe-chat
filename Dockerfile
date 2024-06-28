@@ -29,27 +29,6 @@ COPY . .
 
 ENV NEXT_PUBLIC_BASE_PATH ""
 
-ARG NEXT_PUBLIC_SERVICE_MODE=server
-ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_c2luZ3VsYXItZ2hvdWwtMzYuY2xlcmsuYWNjb3VudHMuZGV2JA
-ARG NEXT_PUBLIC_S3_DOMAIN=https://chengdu-lobe.oss-cn-chengdu.aliyuncs.com
-
-ENV KEY_VAULTS_SECRET "h1dowqJMJ1hL5w7iVp4k0OiMm0VsJSWm"
-ENV DATABASE_DRIVER=node
-ENV DATABASE_URL=postgres://unkwon:unkwon=@localhost:5432/unkwon
-ENV KEY_VAULTS_SECRET=unkwon
-
-# Clerk 相关配置
-ENV CLERK_WEBHOOK_SECRET=unkwon
-ENV CLERK_SECRET_KEY=unkwon
-
-# S3 相关配置（上传图片必须）
-
-ENV S3_ACCESS_KEY_ID=unkwon
-ENV S3_SECRET_ACCESS_KEY=unkwon
-ENV S3_ENDPOINT=https://unkwon.com
-# 暂时使用外网地址
-ENV S3_BUCKET=unkwon
-
 # Sentry
 ENV NEXT_PUBLIC_SENTRY_DSN ""
 ENV SENTRY_ORG ""
